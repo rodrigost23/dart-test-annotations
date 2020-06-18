@@ -1,0 +1,19 @@
+{
+  "name": "dart-test-anonotations-action",
+  "version": "1.0.0",
+  "description": "Parses dart test json report and shows annotations in files",
+  "repository": {
+    "url": "https://github.com/rodrigost23/dart-test-anonotations-action"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Rodrigo Tavares",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.2.4",
+    "@actions/github": "^3.0.0"
+  }
+}

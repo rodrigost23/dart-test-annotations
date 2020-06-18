@@ -1,0 +1,6 @@
+name: 'Dart Test annotations'
+description: 'Parses dart test json report and shows annotations in files'
+
+runs:
+  using: 'node12'
+  main: 'index.js'
