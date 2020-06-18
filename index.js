@@ -1,9 +1,6 @@
 //@ts-check
 const core = require('@actions/core');
-const github = require('@actions/github');
 const fs = require('fs');
-
-const { GITHUB_TOKEN, GITHUB_WORKSPACE, INPUT_PATH } = process.env;
 
 async function main() {
   try {
