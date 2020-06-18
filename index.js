@@ -10,7 +10,7 @@ async function main() {
 
     if (annotations.length > 0) {
       annotations.forEach(a => {
-        console.log(`::error ${a.file ? `file=${a.file},line=${a.line},col=${a.col}` : ''}::${a.error}${a.stackTrace ? ` ${a.stackTrace}` : ''}`)
+        console.log(`::error ${a.file ? `file=${a.file},line=${a.line},col=${a.col}` : ''}::${a.error}${a.stackTrace ? `%0A%0A${a.stackTrace}` : ''}`)
       });
       core.setFailed(`${annotations.length} test errors(s) found`);
     }
@@ -60,14 +60,10 @@ function parseOutput(output) {
       let matches = RegExp.exec(item.stackTrace);
 
       let error = item.error
-        .split(/\n/g).map((line) => line.trim())
-        .join('; ')
-        .replace(matches[1], '')
+        .replace(/\r?\n/g, '%0A')
       
       let stackTrace = item.stackTrace
-        .split(/\n/g).map((line) => line.trim())
-        .join('; ')
-        .replace(matches[1], '')
+        .replace(/\r?\n/g, '%0A')
 
       if (matches) {
         annotations.push({
