@@ -1,6 +1,15 @@
 name: 'Dart Test annotations'
 description: 'Parses dart test json report and shows annotations in files'
 
+inputs:
+  path:
+    description: Path to the JSON file
+    required: true
+
+branding:
+  color: blue
+  icon: edit-3
+
 runs:
   using: 'node12'
   main: 'index.js'
