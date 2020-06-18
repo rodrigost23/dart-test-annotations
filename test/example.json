@@ -1,0 +1,16 @@
+{"protocolVersion":"0.1.1","runnerVersion":"1.15.0","pid":110624,"type":"start","time":0}
+{"suite":{"id":0,"platform":"vm","path":"./test/file.dart"},"type":"suite","time":1}
+{"test":{"id":1,"name":"loading ./test/file.dart","suiteID":0,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":2}
+{"count":1,"type":"allSuites","time":4}
+{"testID":1,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":2021}
+{"group":{"id":2,"suiteID":0,"parentID":null,"name":null,"metadata":{"skip":false,"skipReason":null},"testCount":3,"line":null,"column":null,"url":null},"type":"group","time":2029}
+{"test":{"id":3,"name":"test1","suiteID":0,"groupIDs":[2],"metadata":{"skip":false,"skipReason":null},"line":6,"column":3,"url":"/dart-test-annotations/test/file.dart"},"type":"testStart","time":2031}
+{"testID":3,"error":"Expected: 'Lorem ipsum dolor sit amet.'\n  Actual: 'Lorem ipsum dolor sit amet. A'\n   Which: is different. Both strings start the same, but the actual value also has the following trailing characters:  A\n","stackTrace":"package:test_api    expect\ntest/file.dart 7:5  main.<fn>\n","isFailure":true,"type":"error","time":2124}
+{"testID":3,"result":"failure","skipped":false,"hidden":false,"type":"testDone","time":2125}
+{"test":{"id":4,"name":"test2","suiteID":0,"groupIDs":[2],"metadata":{"skip":false,"skipReason":null},"line":11,"column":3,"url":"/dart-test-annotations/test/file.dart"},"type":"testStart","time":2127}
+{"testID":4,"error":"FormatException: Invalid radix-16 number (at character 1)\nhttp\n^\n","stackTrace":"dart:_http            _HttpClient.get\ntest/file.dart 12:24  main.<fn>\n","isFailure":false,"type":"error","time":2159}
+{"testID":4,"result":"error","skipped":false,"hidden":false,"type":"testDone","time":2159}
+{"test":{"id":5,"name":"test3","suiteID":0,"groupIDs":[2],"metadata":{"skip":false,"skipReason":null},"line":15,"column":3,"url":"/dart-test-annotations/test/file.dart"},"type":"testStart","time":2161}
+{"testID":5,"error":"Exception: fail","stackTrace":"test/file.dart 16:5  main.<fn>\n","isFailure":false,"type":"error","time":2170}
+{"testID":5,"result":"error","skipped":false,"hidden":false,"type":"testDone","time":2171}
+{"success":false,"type":"done","time":2203}
