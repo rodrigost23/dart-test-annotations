@@ -1,3 +1,4 @@
+//@ts-check
 const core = require('@actions/core');
 const github = require('@actions/github');
 const fs = require('fs');
@@ -8,10 +9,16 @@ async function main() {
   try {
     let fileContents = fs.readFileSync(core.getInput('path', { required: true }), { encoding: 'utf-8' });
 
-    console.log(parseOutput(fileContents));
+    let annotations = parseOutput(fileContents);
 
+    if (annotations.length > 0) {
+      annotations.forEach(a => {
+        console.log(`::error ${a.file ? `file=${a.file},line=${a.line},col=${a.col}` : ''}::${a.error}${a.stackTrace ? `\\n\\n ${a.stackTrace}` : ''}`)
+      });
+      core.setFailed(`${annotations.length} test errors(s) found`);
+    }
   } catch (error) {
-    core.setFailed(error.message);
+    core.setFailed(error);
   }
 }
 
@@ -21,14 +28,23 @@ async function main() {
  * @property {string} stackTrace
  * @property {string} error
  * @property {string} type
- * @property {bool} isFailure
+ * @property {boolean} isFailure
+ */
+
+/**
+ * @typedef {Object} Annotation
+ * @property {string} [file]
+ * @property {number} [line]
+ * @property {number} [col]
+ * @property {string} error
+ * @property {string} [stackTrace]
  */
 
 /**
  * @param {string} output 
  */
 function parseOutput(output) {
-  /** @type {(import("@octokit/types").ChecksListAnnotationsResponseData)[]} */
+  /** @type {Annotation[]} */
   let annotations = [];
 
   if (output.length == 0) {
@@ -42,38 +58,22 @@ function parseOutput(output) {
     let item = JSON.parse(line);
 
     if (item.testID && item.error) {
-      let RegExp = /([\w\\\/\.]+)[ :](\d+):(\d+)/gi;
+      let RegExp = /([\w\\\/\.]+) (\d+):(\d+)/gi;
 
-      if (item.isFailure) {
-        let matches = RegExp.exec(item.stackTrace);
+      let matches = RegExp.exec(item.stackTrace);
+
+      if (matches) {
         annotations.push({
-          path: matches[1],
-          start_line: matches[2],
-          end_line: matches[2],
-          start_column: matches[3],
-          end_column: matches[3],
-          annotation_level: "error",
-          message: item.error,
-          raw_details: item.stackTrace
+          file: matches[1],
+          line: Number.parseInt(matches[2]),
+          col: Number.parseInt(matches[3]),
+          error: item.error.replace(/\n/g, '\\n'),
+          stackTrace: item.stackTrace.replace(/\n/g, '\\n')
         });
-
-      } else if (item.type == "error") {
-        let err = item.error.replace(RegExp, "$$$$$$$&")
-        err.split("$$$").forEach(err => {
-          let matches = RegExp.exec(err);
-
-          if (matches) {
-            annotations.push({
-              path: matches[1],
-              start_line: matches[2],
-              end_line: matches[2],
-              start_column: matches[3],
-              end_column: matches[3],
-              annotation_level: "error",
-              message: err,
-              raw_details: item.stackTrace
-            });
-          }
+      } else {
+        annotations.push({
+          error: item.error.replace(/\n/g, '\\n'),
+          stackTrace: item.stackTrace.replace(/\n/g, '\\n')
         });
       }
     }
