@@ -2,8 +2,8 @@ name: Test action
 
 on:
   push:
-    branches-ignore:
-      - release/*
+    branches:
+      - develop
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
