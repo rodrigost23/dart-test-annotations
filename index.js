@@ -10,7 +10,7 @@ async function main() {
 
     if (annotations.length > 0) {
       annotations.forEach(a => {
-        console.log(`::error ${a.file ? `file=${a.file},line=${a.line},col=${a.col}` : ''}::${a.error}${a.stackTrace ? `\\n\\n ${a.stackTrace}` : ''}`)
+        console.log(`::error ${a.file ? `file=${a.file},line=${a.line},col=${a.col}` : ''}::${a.error}${a.stackTrace ? ` ${a.stackTrace}` : ''}`)
       });
       core.setFailed(`${annotations.length} test errors(s) found`);
     }
@@ -59,18 +59,28 @@ function parseOutput(output) {
 
       let matches = RegExp.exec(item.stackTrace);
 
+      let error = item.error
+        .split(/\n/g).map((line) => line.trim())
+        .join('; ')
+        .replace(matches[1], '')
+      
+      let stackTrace = item.stackTrace
+        .split(/\n/g).map((line) => line.trim())
+        .join('; ')
+        .replace(matches[1], '')
+
       if (matches) {
         annotations.push({
           file: matches[1],
           line: Number.parseInt(matches[2]),
           col: Number.parseInt(matches[3]),
-          error: item.error.replace(/\n/g, '\\n'),
-          stackTrace: item.stackTrace.replace(/\n/g, '\\n')
+          error: error,
+          stackTrace: stackTrace
         });
       } else {
         annotations.push({
-          error: item.error.replace(/\n/g, '\\n'),
-          stackTrace: item.stackTrace.replace(/\n/g, '\\n')
+          error: error,
+          stackTrace: stackTrace
         });
       }
     }
