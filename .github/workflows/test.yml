@@ -1,6 +1,9 @@
 name: Test action
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - develop
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
