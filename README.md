@@ -1,21 +1,16 @@
 # Dart Test annotations
 
-This action prints "Hello World" or "Hello" + the name of a person to greet to the log.
-
-## Inputs
-
-### `example`
-
-**Required** Description.
-
-## Outputs
-
-### `example-output`
-
-Description
+Annotates files on GitHub based on Dart test results
 
 ## Example usage
 
-uses: actions/hello-world-javascript-action@v1
-with:
-  who-to-greet: 'Mona the Octocat'
+```yaml
+steps:
+  - name: Run tests
+    run: pub run test --file-reporter="json:test-report.json"
+    continue-on-error: true
+  - name: Annotate files with test errors
+    uses: rodrigost23/dart-test-annotations
+    with:
+      path: test-report.json
+```
